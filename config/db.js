@@ -1,9 +1,6 @@
 const mongoose = require('mongoose')
 
-
-
 const connectDb = async()=>{
-
 
       try {
 
@@ -13,10 +10,8 @@ const connectDb = async()=>{
         
       } catch (error) {
         console.log(error);
-        
-        
+      
       }
-
 }
 
 module.exports=connectDb

@@ -144,7 +144,7 @@ const deleteProperty = async (req, res) => {
 
   try {
     // Find the property by ID
-    const property = await Property.findById(propertyId);
+    const property = await USERS.findById(propertyId);
     if (!property) {
       return res.status(404).json({ success: false, message: 'Property not found' });
     }
@@ -161,7 +161,7 @@ const deleteProperty = async (req, res) => {
     }
 
     // Delete the property from MongoDB
-    await Property.findByIdAndDelete(propertyId);
+    await USERS.findByIdAndDelete(propertyId);
 
     res.status(200).json({
       success: true,
