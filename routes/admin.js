@@ -9,6 +9,8 @@ const {
        deleteProperty,
        addPrpertyData,
        updateProperty,
+       getPropertyCount,
+       getCategoryWiseCount
      } = require('../Controllers/adminController')
 
 const { doLogin } = require('../Controllers/authControler')
@@ -23,6 +25,8 @@ router.get('/categoryViseListing', categoryViseListing);
 router.delete('/deleteProperty/:id', deleteProperty);
 router.post('/addPrpertyData', addPrpertyData);
 router.put('/updateProperty:id', updateProperty);
+router.get('/getPropertyCount', getPropertyCount);
+router.get('/getCategoryWiseCount', getCategoryWiseCount);
 
 //login rout
 router.post('/adminLogin', doLogin);
