@@ -7,8 +7,10 @@
     "dev": "nodemon ./bin/www"
   },
   "dependencies": {
+    "body-parser": "^1.20.3",
     "cloudinary": "^1.41.3",
     "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "dotenv": "^16.4.5",
     "express": "~4.16.1",

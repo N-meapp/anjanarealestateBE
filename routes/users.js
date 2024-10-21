@@ -5,7 +5,8 @@ const {
     PropertyList,
     allPropertyList,
     categoryPropertyList,
-    searchProperty
+    searchProperty,
+    singleProperty
  } = require('../Controllers/UserController')
 
 /* GET users listing. */
@@ -17,6 +18,7 @@ router.get('/PropertyList', PropertyList)
 router.get('/allPropertyList', allPropertyList)
 router.get('/categoryPropertyList', categoryPropertyList)
 router.get('/search', searchProperty)
+router.get('/singleProperty',singleProperty)
 
 
 module.exports = router;

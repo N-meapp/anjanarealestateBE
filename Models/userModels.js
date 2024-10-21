@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
        },
 
        features:{
-        type:[Object],
+        type :Object,
         required:true
        },
 

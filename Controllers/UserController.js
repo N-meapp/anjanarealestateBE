@@ -58,7 +58,6 @@ const allPropertyList = async (req, res) => {
 
 
 
-
 const categoryPropertyList = async (req, res) => {
     console.log(req.query, "datqqqqqqqq");
     
@@ -133,8 +132,42 @@ const searchProperty = async (req, res) => {
 
 
 
+const singleProperty = async(req, res)=>{
+
+ 
+  const {propertyId} = req.query;
+  console.log(propertyId, "dattaaaaaaaaa");
+try {
+   
+
+  const singleData = await USERS.findOne({_id: propertyId})
+
+  if (!singleData) {
+    return res.status(404).json({ 
+      message: 'Property not found',
+      success:false
+     })
+  }
+
+  res.status(200).json({
+    data:singleData,
+    success:true,
+    message:"data fetching successfully"
+  })
+  
+} catch (error) {
+
+  console.error('Error fetching property details:', error);
+  res.status(500).json({
+    message: 'Server error fetching property details',
+    error: error.message,
+  });
+}
+}
 
 
 
 
-module.exports = { PropertyList, allPropertyList, categoryPropertyList, searchProperty };
+
+
+module.exports = { PropertyList, allPropertyList, categoryPropertyList, searchProperty, singleProperty };

@@ -1,23 +1,34 @@
-const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
+const { v2: cloudinary } = require('cloudinary');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
+require('dotenv').config();
 
-// Configure Cloudinary
+
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,  // Your Cloudinary cloud name
   api_key: process.env.CLOUDINARY_API_KEY,        // Your Cloudinary API key
   api_secret: process.env.CLOUDINARY_API_SECRET,  // Your Cloudinary API secret
 });
 
-// Set up Cloudinary storage for multer
-const storage = new CloudinaryStorage({
+
+const options = {
   cloudinary: cloudinary,
   params: {
-    folder: 'property-images',  // Folder in your Cloudinary account
-    allowed_formats: ['jpeg', 'png', 'jpg'],  // Allowed image formats
-    public_id: (req, file) => Date.now() + '-' + file.originalname, // Unique file name
-  },
-});
+    folder:'photos',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'svg', 'webp'],
+    public_id: (req, file) => {
+      console.log(file, 'fileisssss');
+      const originalname = file.originalname.split('.')
+      return `image-${Date.now()}-${originalname[0]}`
+    }
+  }
+}
 
-const upload = require('multer')({ storage });
+const store = new CloudinaryStorage(options)
+  
+const uploadsMulter = multer({ storage: store }).array("image", 10);;
 
-module.exports = { cloudinary, upload };
+module.exports = uploadsMulter;
+
+
