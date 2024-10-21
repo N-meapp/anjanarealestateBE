@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 const dotenv = require('dotenv').config();
 const connectDb = require('./config/db');
+var bodyParser = require('body-parser');
 
 
 var app = express();
@@ -24,6 +25,10 @@ const corsOptions = {
   credentials: true  // Allow cookies to be sent with requests
 };
 
+
+app.use(bodyParser.json())
+
+app.use(express.urlencoded({ extended: true }));
 // Apply CORS middleware
 app.use(cors(corsOptions));
 
