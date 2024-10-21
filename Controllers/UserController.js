@@ -215,7 +215,7 @@ const singleProperty = async(req, res)=>{
   }
 
 
-
+}
 
 
 

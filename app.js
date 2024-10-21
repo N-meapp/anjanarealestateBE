@@ -7,15 +7,14 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
-const dotenv = require('dotenv').config();
 const connectDb = require('./config/db')
 const bodyParser = require('body-parser')
-const cors = require('cors')
-require('dotenv').config();
+// const cors = require('cors')
+require('dotenv').config(); 
 
 
 
-var app = express();
+var app = express(); 
 
 connectDb()
 
