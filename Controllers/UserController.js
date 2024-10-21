@@ -59,7 +59,6 @@ const allPropertyList = async (req, res) => {
 
 
 
-
 const categoryPropertyList = async (req, res) => {
     console.log(req.query.category, "datqqqqqqqq");
     
@@ -216,7 +215,6 @@ const singleProperty = async(req, res)=>{
   }
 
 
-}
 
 
 

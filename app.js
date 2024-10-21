@@ -8,8 +8,11 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 const dotenv = require('dotenv').config();
-const connectDb = require('./config/db');
-var bodyParser = require('body-parser');
+const connectDb = require('./config/db')
+const bodyParser = require('body-parser')
+const cors = require('cors')
+require('dotenv').config();
+
 
 
 var app = express();
@@ -33,6 +36,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 
 
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -42,6 +47,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json())
+app.use(cors({
+  origin: 'http://localhost:5173', // Allow this specific origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Headers you are using
+}));
+
+// Alternatively, to allow all origins:
+app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

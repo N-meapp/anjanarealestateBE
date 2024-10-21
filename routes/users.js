@@ -19,7 +19,5 @@ router.get('/allPropertyList', allPropertyList)
 router.get('/categoryPropertyList', categoryPropertyList)
 router.get('/singleProperty', singleProperty)
 router.get('/search', searchProperty)
- 
-
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const USERS = require('../Models/userModels');
 const CATEGORY = require('../Models/categoryModel');
+const YOUTUBE = require('../Models/youtubeVideoModal')
 const { upload } = require('../config/cloudinary');
 const { cloudinary } = require('../config/cloudinary'); 
 
@@ -74,7 +75,7 @@ const deleteCategory = async(req, res)=>{
 
 
 const addCategory = async (req, res) => {
-    console.log( req.body," receved request in add category");
+    console.log( req.body," recieved request in add category");
     
     try {
       const { categoryName } = req.body;
@@ -85,10 +86,9 @@ const addCategory = async (req, res) => {
         return res.status(400).json({ message: 'Category already exists' });
       }
   
-    
+      
       const newCategory = new CATEGORY({ categoryName });
-  
-     
+
       await newCategory.save();
   
 
@@ -189,110 +189,176 @@ const extractPublicIdFromUrl = (url) => {
 
 
 
-const addPrpertyData = (req, res) => {
-  upload.array('images', 5)(req, res, async function (err) {  
-    if (err) {
-      return res.status(500).json({ error: 'File upload failed', details: err });
-    }
+const addPrpertyData = async(req, res) => {
 
-    try {
+  const { name, address, features, area, status, furnishedStatus, contactNumber, category, rate } = req.query;
 
-      const { name, address, features, area, status, furnishedStatus, contactNumber, category, rate } = req.body;
 
-      const imageUrls = req.files.map(file => file.path); 
+  console.log(req.query);
+  
 
-      const newProperty = new Property({
-        name,
-        address,
-        features,
-        area,
-        status,
-        furnishedStatus,
-        contactNumber,
-        category,
-        imageUrls,  // Save multiple image URLs
-        rate,
-      });
+    const photos = req.files.map((file)=>{
+      return file.path
+    })
 
-      await newProperty.save();
+      try {
 
-      // Send a success response
-      res.status(201).json({
-        success: true,
-        message: 'Property data added successfully',
-        data: newProperty,
-      });
-    } catch (error) {
-      console.error('Error adding property data:', error);
-      res.status(500).json({
-        success: false,
-        message: 'Error adding property data',
-        error: error.message,
-      });
-    }
-  });
+        const newProperty = new USERS({
+          name,
+          address,
+          features,
+          area,
+          status,
+          furnishedStatus,
+          contactNumber,
+          category,
+          photos, 
+          rate,
+        });
+
+        await newProperty.save();
+
+        // Send a success response
+        res.status(201).json({
+          success: true,
+          message: 'Property data added successfully',
+          data: newProperty,
+        });
+      } catch (error) {
+        console.error('Error adding property data:', error);
+        res.status(500).json({
+          success: false,
+          message: 'Error adding property data',
+          error: error.message,
+        });
+      }
 };
 
 
 
 
 // Function to update property details along with handling new image uploads
-const updateProperty = (req, res) => {
-  const propertyId = req.params.id;  // Assuming you send propertyId as a URL param
+const updateProperty = async(req, res) => {
+  const { photos,name, address, features, area, status, furnishedStatus, contactNumber, category, rate} = req.query;
+  const propertyId = req.params.id;
 
-  upload.array('images', 5)(req, res, async function (err) {  // 'images' field for file upload, max 5 files
-    if (err) {
-      return res.status(500).json({ error: 'File upload failed', details: err });
+  const tempArray1 = req.files.map((file)=>{
+    return file.path
+  })  
+
+  const tempArray2 = photos.filter((image)=>{
+    if(image.includes('cloudinary.com')){
+      return image
+    }
+  })
+
+const imageArray = tempArray1.concat(tempArray2)
+
+
+  try {
+    // Find the property by ID
+    const property = await USERS.findById(propertyId);
+    if (!property) {
+      return res.status(404).json({ success: false, message: 'Property not found' });
     }
 
-    try {
-      // Find the property by ID
-      const property = await Property.findById(propertyId);
-      if (!property) {
-        return res.status(404).json({ success: false, message: 'Property not found' });
-      }
+    
 
-      // Update the fields from request body if provided
-      const { name, address, features, area, status, furnishedStatus, contactNumber, category, rate } = req.body;
+    if (name) property.name = name;
+    if (address) property.address = address;
+    if (features) property.features = features;
+    if (area) property.area = area;
+    if (status) property.status = status;
+    if (furnishedStatus) property.furnishedStatus = furnishedStatus;
+    if (contactNumber) property.contactNumber = contactNumber;
+    if (category) property.category = category;
+    if (rate) property.rate = rate;
+    if(imageArray) property.photos = imageArray
 
-      if (name) property.name = name;
-      if (address) property.address = address;
-      if (features) property.features = features;
-      if (area) property.area = area;
-      if (status) property.status = status;
-      if (furnishedStatus) property.furnishedStatus = furnishedStatus;
-      if (contactNumber) property.contactNumber = contactNumber;
-      if (category) property.category = category;
-      if (rate) property.rate = rate;
 
-      // If new images are uploaded, replace the old image URLs
-      if (req.files && req.files.length > 0) {
-        const newImageUrls = req.files.map(file => file.path);
-        property.imageUrls = newImageUrls;  // Replace old image URLs with new ones
-      }
+    await property.save();
+    res.status(200).json({
+      success: true,
+      message: 'Property updated successfully',
+      data: property,
+    });
 
-      // Save the updated property details to the database
-      await property.save();
+  } catch (error) {
+    console.error('Error updating property:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error updating property',
+      error: error.message,
+    });
+  }
+  
 
-      res.status(200).json({
-        success: true,
-        message: 'Property updated successfully',
-        data: property,
-      });
-
-    } catch (error) {
-      console.error('Error updating property:', error);
-      res.status(500).json({
-        success: false,
-        message: 'Error updating property',
-        error: error.message,
-      });
-    }
-  });
 };
 
 
+const addYoutubeVideo = async(req,res)=>{
 
+  try {
+    const { video } = req.body;
+
+ 
+    const existingVideo = await YOUTUBE.findOne({video});
+    if (existingVideo) {
+      return res.status(400).json({ message: 'Video already exists' });
+    }
+
+    
+    const newVideo = new YOUTUBE({ video });
+
+    await newVideo.save();
+
+
+    res.status(201).json({
+      success: true,
+      message: 'Video uploaded successfully',
+      data: newVideo,
+    });
+  } catch (error) {
+    console.error("Error uploading new video:", error);
+    res.status(500).json({
+      success: false,
+      message: 'Error uploading video',
+      error: error.message,
+    });
+  }
+
+
+}
+
+
+const youtubeVideoList = async(req, res)=>{
+    
+  try {
+
+      const videoLists = await YOUTUBE.find()
+      
+      if(!videoLists || videoLists === 0){
+          return res.status(404).json({message : "Video not found!"})
+      }
+
+      res.status(200).json({
+          success: true,
+          data: videoLists
+      });
+         
+      
+  } catch (error) {
+   
+      console.log("error fetching videos", error);
+      
+      res.status(500).json({
+          success: false,
+          message: "errror fetching videos",
+          error: error.message
+      });
+  }
+
+};
 
 
 
@@ -367,7 +433,6 @@ const getcategoryCount = async (req, res) => {
 
 
 
-
 module.exports = {
       categoryList,
       deleteCategory,
@@ -376,14 +441,10 @@ module.exports = {
       deleteProperty,
       updateProperty,
       addPrpertyData,
+      addYoutubeVideo,
+      youtubeVideoList,
       getPropertyCount,
       getCategoryWiseCount,
       getcategoryCount
     }
-
-
-
-
-
-
 
