@@ -360,6 +360,79 @@ const youtubeVideoList = async(req, res)=>{
 
 };
 
+
+
+const getPropertyCount = async (req, res) => {
+  try {
+    const propertyCount = await USERS.countDocuments();
+
+    res.status(200).json({
+      success: true,
+      count: propertyCount,
+      message: "Property count fetched successfully"
+    });
+  } catch (error) {
+    console.error("Error fetching property count:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching property count",
+      error: error.message
+    });
+  }
+};
+
+
+
+
+const getCategoryWiseCount = async (req, res) => {
+  try {
+    const categoryWiseCount = await USERS.aggregate([
+      {
+        $group: {
+          _id: "$category", 
+          count: { $sum: 1 } 
+        }
+      }
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: categoryWiseCount, 
+      message: "Category-wise property count fetched successfully"
+    });
+  } catch (error) {
+    console.error("Error fetching category-wise property count:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching category-wise property count",
+      error: error.message
+    });
+  }
+};
+
+
+
+const getcategoryCount = async (req, res) => {
+  try {
+    const categoryCount = await CATEGORY.countDocuments();
+
+    res.status(200).json({
+      success: true,
+      count: categoryCount,
+      message: "category count fetched successfully"
+    });
+  } catch (error) {
+    console.error("Error fetching category count:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching category count",
+      error: error.message
+    });
+  }
+};
+
+
+
 module.exports = {
       categoryList,
       deleteCategory,
@@ -369,6 +442,9 @@ module.exports = {
       updateProperty,
       addPrpertyData,
       addYoutubeVideo,
-      youtubeVideoList
+      youtubeVideoList,
+      getPropertyCount,
+      getCategoryWiseCount,
+      getcategoryCount
     }
 
