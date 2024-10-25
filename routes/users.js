@@ -7,6 +7,7 @@ const {
     categoryPropertyList,
     searchProperty,
     singleProperty,
+    sendMail,
  } = require('../Controllers/UserController')
 
 /* GET users listing. */
@@ -19,5 +20,6 @@ router.get('/allPropertyList', allPropertyList)
 router.get('/categoryPropertyList', categoryPropertyList)
 router.get('/singleProperty', singleProperty)
 router.get('/search', searchProperty)
+router.post('/send-mail',sendMail)
 
 module.exports = router;

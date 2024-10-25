@@ -307,7 +307,6 @@ const addYoutubeVideo = async(req,res)=>{
       return res.status(400).json({ message: 'Video already exists' });
     }
 
-    
     const newVideo = new YOUTUBE({ video });
 
     await newVideo.save();
@@ -433,6 +432,41 @@ const getcategoryCount = async (req, res) => {
 
 
 
+const deleteVideo = async(req, res)=>{
+  console.log(req.params.id, "deleted request reveved");
+  const id = req.params.id
+  
+
+   try {
+
+      const result = await YOUTUBE.deleteOne({_id:id});
+      console.log(result);
+      
+
+      if(result.deletedCount === 0){
+       return res.status(404).json({message: "no proprty found that catyegory!"});
+      }
+
+      res.status(200).json({
+       success: true,
+       message: "video deleted successfully",
+      });
+
+   } catch (error) {
+      console.log("error deleting video", error);
+
+      res.status(500).json({
+       success: false,
+       message: "error deleting video",
+       error: error.message,
+      })
+      
+   }
+
+}
+
+
+
 module.exports = {
       categoryList,
       deleteCategory,
@@ -445,6 +479,7 @@ module.exports = {
       youtubeVideoList,
       getPropertyCount,
       getCategoryWiseCount,
-      getcategoryCount
+      getcategoryCount,
+      deleteVideo
     }
 

@@ -16,7 +16,6 @@ const userSchema = mongoose.Schema({
 
        features:{
         type :Object,
-        required:true
        },
 
         area:{

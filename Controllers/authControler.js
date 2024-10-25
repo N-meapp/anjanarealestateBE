@@ -3,7 +3,7 @@ const ADMINAUTH = require('../Models/adminAuthModel')
 
 const doLogin = async(req, res)=>{
          
-    console.log("receved log reqqq");
+    console.log(req.body,"receved log reqqq");
     
     try {
 
@@ -19,7 +19,7 @@ const doLogin = async(req, res)=>{
             })
         }
         else{
-            res.status(404).json({
+            res.status(200).json({
                success: false,
                message: "Invalid credential"
             })
