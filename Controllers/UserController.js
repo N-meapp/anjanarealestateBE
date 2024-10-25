@@ -88,38 +88,48 @@ const categoryPropertyList = async (req, res) => {
 
 
 
-
 const searchProperty = async (req, res) => {
+  try {
+    const query = req.query.query;  
+
+    if (!query) {
+      return res.status(400).json({
+        success: false,
+        message: 'Search query is required'
+      });
+    }
 
 
-try {
-  const query = req.query.query
+    const result = await USERS.find({
+      $or: [
+        { name: { $regex: query, $options: 'i' } },  
+        { category: { $regex: query, $options: 'i' } }  
+      ]
+    });
 
-  console.log(query, "hahahahahaha");
-
-  const result = await USERS.find({name:{ $regex: query, $options: 'i' }})
-
-  if(result.length > 0){
-    res.status(200).json({
-      success: true,
-      data: result
-    })
-  }else{
-    res.status(404).json({
+    
+    if (result.length > 0) {
+      res.status(200).json({
+        success: true,
+        data: result
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: 'No data found matching your search query!'
+      });
+    }
+    
+  } catch (error) {
+    console.error("Error fetching properties:", error); 
+    res.status(500).json({
       success: false,
-      message: "data not found!"
-    })
+      message: 'Error fetching properties',
+      error: error.message
+    });
   }
-  
-  
-} catch (error) {
-  console.error("Error fetching properties:", error); 
-  res.status(500).json({
-    success: false,
-    message: 'Error fetching properties',
-    error: error 
-  });
-}
+};
+
 
 
 
@@ -175,7 +185,7 @@ try {
   //     error: error.message,
   //   });
   // }
-};
+
 
 
 
