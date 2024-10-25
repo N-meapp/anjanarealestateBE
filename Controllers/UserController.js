@@ -1,4 +1,8 @@
 const USERS = require('../Models/userModels');
+require('dotenv').config();
+const nodemailer = require('nodemailer')
+
+
 
 
 
@@ -228,5 +232,44 @@ const singleProperty = async(req, res)=>{
 }
 
 
+const sendMail = (req, res) => {
+  const { name, email, message } = req.body;
 
-module.exports = { PropertyList, allPropertyList, categoryPropertyList, searchProperty, singleProperty };
+  const COMPANY_MAIL_ID = process.env.COMPANY_MAIL_ID;
+  const COMPANY_MAIL_PASSWORD = process.env.COMPANY_MAIL_PASSWORD;
+
+  // Create a transporter using Nodemailer
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: COMPANY_MAIL_ID,
+      pass: COMPANY_MAIL_PASSWORD, // Ensure this is securely stored
+    },
+  });
+
+  // Set up email options
+  const mailOptions = {
+    from: `${email}`, // Show the user's email in the 'from' field
+    to: COMPANY_MAIL_ID, // Company email to receive messages
+    subject: `ENQUIRY from ${name}`,
+    html: `<div style="font-family: Arial, sans-serif; color: #333;">
+        <h3>Mail Id : ${email}</h3>
+        <h1>Hello Iam ${name}</h1>
+        <h3>${message}</h3>
+        </div>`,
+  };
+
+  // Send email
+  transporter.sendMail(mailOptions, (error, info) => { 
+    if (error) {
+      console.error('Error sending email:', error);   
+      return res.status(500).json({ error: 'Email not sent, please try again.' });
+    }
+    res.status(200).json({ success: true });
+  });
+};
+
+
+
+
+module.exports = { PropertyList, allPropertyList, categoryPropertyList, searchProperty, singleProperty,sendMail};
