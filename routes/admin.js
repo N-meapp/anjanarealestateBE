@@ -32,11 +32,11 @@ router.post('/addPropertyData',uploadsMulter,addPrpertyData);
 router.post('/addPrpertyData', addPrpertyData);
 router.put('/updateProperty:id', updateProperty);
 router.get('/getPropertyCount', getPropertyCount);
-router.get('/getCategoryWiseCount', getCategoryWiseCount);
+router.get('/getCategoryWiseCount', getCategoryWiseCount); 
 router.post('/updateProperty/:id',uploadsMulter, updateProperty);
 
-
-// video route
+  
+// video route 
 router.post('/add-video',addYoutubeVideo)
 router.get('/videoList',youtubeVideoList)
 router.delete('/deleteVideo/:id',deleteVideo)
@@ -52,3 +52,7 @@ router.post('/adminLogin', doLogin);
 
 
 module.exports = router;
+
+
+
+ 

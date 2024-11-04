@@ -194,7 +194,7 @@ const addPrpertyData = async(req, res) => {
   const { name, address, features, area, status, furnishedStatus, contactNumber, category, rate } = req.query;
 
 
-  console.log(req.query);
+  console.log('req.......q:',req.query);
   
 
     const photos = req.files.map((file)=>{
