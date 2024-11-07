@@ -11,7 +11,7 @@ const PropertyList = async (req, res) => {
     console.log("datttaaaaa");
     
   try {
-    const properties = await USERS.find().limit(6); 
+    const properties = await USERS.find().limit(8); 
 
     if (!properties || properties.length === 0) {
       return res.status(404).json({ message: 'No properties found' }); 

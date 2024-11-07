@@ -49,7 +49,7 @@ const userSchema = mongoose.Schema({
         },
 
         rate:{
-            type: Number,
+            type: String,
             required:true
         },
 
