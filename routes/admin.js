@@ -13,7 +13,8 @@ const {
        youtubeVideoList,
        getPropertyCount,
        getCategoryWiseCount,
-       deleteVideo
+       deleteVideo,
+       addBlog,getBlogList,deleteBlog
      } = require('../Controllers/adminController')
 
 const { doLogin } = require('../Controllers/authControler');
@@ -40,7 +41,9 @@ router.post('/updateProperty/:id',uploadsMulter, updateProperty);
 router.post('/add-video',addYoutubeVideo)
 router.get('/videoList',youtubeVideoList)
 router.delete('/deleteVideo/:id',deleteVideo)
-
+router.post('/add-blog',addBlog)
+router.get('/blog-list',getBlogList)
+router.delete('/delete-blog/:id',deleteBlog) 
 
 //login route
 router.post('/adminLogin', doLogin);

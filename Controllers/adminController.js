@@ -3,6 +3,8 @@ const CATEGORY = require('../Models/categoryModel');
 const YOUTUBE = require('../Models/youtubeVideoModal')
 const { upload } = require('../config/cloudinary');
 const { cloudinary } = require('../config/cloudinary'); 
+const BLOG = require('../Models/blogModel');
+
 
 
 const categoryList = async(req, res)=>{
@@ -66,11 +68,6 @@ const deleteCategory = async(req, res)=>{
     }
 
 }
-
-
-
-
-
 
 
 
@@ -466,6 +463,100 @@ const deleteVideo = async(req, res)=>{
 }
 
 
+const addBlog = async(req,res)=>{
+
+  try {
+    const { title,description, date, category} = req.body;
+
+ 
+    const existingBlog = await BLOG.findOne({title});
+    if (existingBlog) {
+      return res.status(400).json({ message: 'blog already exists' });
+    }
+
+    const newBlog = new BLOG({ title:title, description:description,date:date,category });
+
+    await newBlog.save();
+
+
+    res.status(201).json({
+      success: true,
+      message: 'Blog uploaded successfully',
+      data: newBlog,
+    });
+  } catch (error) {
+    console.error("Error uploading new blog:", error);
+    res.status(500).json({
+      success: false,
+      message: 'Error uploading blog',
+      error: error.message,
+    });
+  }
+
+
+}
+
+const getBlogList = async(req, res)=>{
+    
+  try {
+
+      const blogLists = await BLOG.find()
+      
+      if(!blogLists || blogLists === 0){
+          return res.status(404).json({message : "blog not found!"})
+      }
+
+      res.status(200).json({
+          success: true,
+          data: blogLists
+      });
+         
+      
+  } catch (error) {
+   
+      console.log("error fetching blogs", error);
+      
+      res.status(500).json({
+          success: false,
+          message: "errror fetching blogs",
+          error: error.message
+      });
+  }
+
+};
+
+const deleteBlog= async(req, res)=>{
+  console.log(req.params.id, "deleted request reveved");
+  const id = req.params.id
+
+   try {
+
+      const result = await BLOG.deleteOne({_id:id});
+      console.log(result);
+      
+
+      if(result.deletedCount === 0){
+       return res.status(404).json({message: "no proprty found that catyegory!"});
+      }
+
+      res.status(200).json({
+       success: true,
+       message: "blog deleted successfully",
+      });
+
+   } catch (error) {
+      console.log("error deleting blog", error);
+
+      res.status(500).json({
+       success: false,
+       message: "error deleting blog",
+       error: error.message,
+      })
+      
+   }
+
+}
+
 
 module.exports = {
       categoryList,
@@ -480,6 +571,9 @@ module.exports = {
       getPropertyCount,
       getCategoryWiseCount,
       getcategoryCount,
-      deleteVideo
+      deleteVideo,
+      addBlog,
+      getBlogList,
+      deleteBlog
     }
 
