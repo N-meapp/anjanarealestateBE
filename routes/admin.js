@@ -41,6 +41,8 @@ router.post('/updateProperty/:id',uploadsMulter, updateProperty);
 router.post('/add-video',addYoutubeVideo)
 router.get('/videoList',youtubeVideoList)
 router.delete('/deleteVideo/:id',deleteVideo)
+
+// blog route
 router.post('/add-blog',addBlog)
 router.get('/blog-list',getBlogList)
 router.delete('/delete-blog/:id',deleteBlog) 
