@@ -465,22 +465,21 @@ const deleteVideo = async(req, res)=>{
 
 const addBlog = async(req,res)=>{
 
-  try {
-    const { title,description, date, category} = req.body;
 
- 
+  try {
+    const { title,description, date, category} = req.query;
     const existingBlog = await BLOG.findOne({title});
     if (existingBlog) {
       return res.status(400).json({ message: 'blog already exists' });
     }
 
-    const newBlog = new BLOG({ title:title, description:description,date:date,category });
+    const newBlog = new BLOG({ title:title, description:description,date:date,category, image: req.files[0]?req.files[0].path : null, });
 
     await newBlog.save();
 
 
-    res.status(201).json({
-      success: true,
+    res.status(201).json({ 
+      success: true, 
       message: 'Blog uploaded successfully',
       data: newBlog,
     });
@@ -526,16 +525,16 @@ const getBlogList = async(req, res)=>{
 };
 
 const deleteBlog= async(req, res)=>{
+R  
   console.log(req.params.id, "deleted request reveved");
   const id = req.params.id
 
    try {
-
       const result = await BLOG.deleteOne({_id:id});
       console.log(result);
       
 
-      if(result.deletedCount === 0){
+      if(result.deletedCount === 0){R
        return res.status(404).json({message: "no proprty found that catyegory!"});
       }
 

@@ -10,7 +10,7 @@ var adminRouter = require('./routes/admin');
 const connectDb = require('./config/db')
 const bodyParser = require('body-parser')
 // const cors = require('cors')
-require('dotenv').config(); 
+require('dotenv').config();
 
 
 
@@ -22,14 +22,15 @@ console.log(process.env.CLOUDINARY_CLOUD_NAME, "cludinary");
 
 // CORS configuration
 const corsOptions = {
-  origin: 'https://anjanarealestates.com',  // Replace this with your frontend URL
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+  origin: 'http://localhost:5173/',  // Replace this with your frontend URL
+  methods: ['DELETE', 'GET', 'POST', 'PUT','OPTIONS'], // Specify allowed methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Headers you are using
+
   credentials: true  // Allow cookies to be sent with requests
 };
 
 
 app.use(bodyParser.json())
-
 app.use(express.urlencoded({ extended: true }));
 // Apply CORS middleware
 app.use(cors(corsOptions));
@@ -48,7 +49,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json())
 app.use(cors({
-  origin: 'https://anjanarealestates.com', // Allow this specific origin
+  origin: 'http://localhost:5173/', // Allow this specific origin
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Headers you are using
 }));

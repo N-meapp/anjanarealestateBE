@@ -43,9 +43,9 @@ router.get('/videoList',youtubeVideoList)
 router.delete('/deleteVideo/:id',deleteVideo)
 
 // blog route
-router.post('/add-blog',addBlog)
+router.post('/add-blog',uploadsMulter,addBlog)
 router.get('/blog-list',getBlogList)
-router.delete('/delete-blog/:id',deleteBlog) 
+router.post('/delete-blog/:id',deleteBlog) 
 
 //login route
 router.post('/adminLogin', doLogin);
