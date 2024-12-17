@@ -22,7 +22,7 @@ console.log(process.env.CLOUDINARY_CLOUD_NAME, "cludinary");
 
 // CORS configuration
 const corsOptions = {
-  origin: 'http://localhost:5173/',  // Replace this with your frontend URL
+  origin: 'https://anjanarealestates.com/',  // Replace this with your frontend URL
   methods: ['DELETE', 'GET', 'POST', 'PUT','OPTIONS'], // Specify allowed methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Headers you are using
 
@@ -50,7 +50,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json())
 app.use(cors({
   origin: 'http://localhost:5173/', // Allow this specific origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+  methods: ['GET', 'POST', 'PUT', 'OPTIONS'], // Allowed HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Headers you are using
 }));
 

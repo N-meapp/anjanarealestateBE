@@ -55,7 +55,6 @@ router.post('/adminLogin', doLogin);
      
 // })
 
-
 module.exports = router;
 
 
